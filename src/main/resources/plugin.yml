@@ -1,0 +1,12 @@
+name: ArcadeLib
+version: '${version}'
+main: de.chafficplugins.arcadelib.ArcadeLib
+api-version: 1.15
+prefix: ArcadeLib
+softdepend: [ CrucialAPI ]
+authors: [ ChafficPlugins ]
+website: https://chafficplugins.github.io/
+commands:
+  arcadelib:
+      description: Setup the lobby
+      usage: /arcadelib setup lobby
