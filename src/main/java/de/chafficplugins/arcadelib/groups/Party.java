@@ -3,11 +3,13 @@ package de.chafficplugins.arcadelib.groups;
 import de.chafficplugins.arcadelib.player.ArcadePlayer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * @author Chaffic
  * @since 1.0.0
+ * @version 1.0
  *
  * A party is a collection of players who want to play together.
  * They join and leave lobbies together.
@@ -16,7 +18,11 @@ public class Party {
     /**
      * The list of all players in this party.
      */
-    public List<ArcadePlayer> players = new ArrayList<>();
+    public HashSet<ArcadePlayer> players = new HashSet<>();
+    /**
+     * All send and not confirmed invitations
+     */
+    public static List<Invitation> invitations = new ArrayList<>();
     /**
      * The leader of the party.
      */
@@ -74,9 +80,72 @@ public class Party {
             if(players.size() > 0) {
                 //TODO: Send message new leader
                 //TODO: change max party size
-                leader = players.get(0);
+                leader = players.iterator().next();
             }
         }
+    }
+
+    /**
+     * Sends an invitation message to another player.
+     * If the inviting sender is already in a party and is not the leader this will be cancelled.
+     * @param sender The sender of the invitation.
+     */
+    public static void invite(ArcadePlayer sender, ArcadePlayer receiver) {
+        if(sender.party != null) {
+            if(sender.party.leader != sender) {
+                //TODO: Send message sender is not the leader
+            } else {
+                if(receiver.party != null) {
+                    //TODO: Send message receiver is already in a party
+                    return;
+                }
+                //TODO: Send message invitation was sent
+                invitations.add(new Invitation(sender, receiver, sender.party));
+                //TODO: Send invitation
+            }
+        } else {
+            if(receiver.party != null) {
+                //TODO: Send message receiver is already in a party
+                return;
+            }
+            sender.party = new Party(sender); //TODO: Add max party size
+            //TODO: Send message party was created
+            invitations.add(new Invitation(sender, receiver, sender.party));
+            //TODO: Send message invitation was sent
+        }
+    }
+
+    /**
+     * Accepts an invitation.
+     * @param receiver The receiver of the invitation.
+     * @param sender The sender of the invitation.
+     */
+    public static void acceptInvitation(ArcadePlayer receiver, ArcadePlayer sender) {
+        for(Invitation invitation : invitations) {
+            if(invitation.receiver == receiver && invitation.sender == sender) {
+                receiver.party = invitation.group;
+                invitations.remove(invitation);
+                //TODO: SEND MESSAGE JOINED PARTY
+                return;
+            }
+        }
+        //TODO: Send message invitation not found
+    }
+
+    /**
+     * Declines an invitation.
+     * @param receiver The receiver of the invitation.
+     * @param sender The sender of the invitation.
+     */
+    public static void declineInvitation(ArcadePlayer receiver, ArcadePlayer sender) {
+        for(Invitation invitation : invitations) {
+            if(invitation.receiver == receiver && invitation.sender == sender) {
+                invitations.remove(invitation);
+                //TODO: SEND MESSAGE DECLINED INVITATION
+                return;
+            }
+        }
+        //TODO: Send message invitation not found
     }
 
     /**

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * @author Chaffic
  * @since 1.0.0
+ * @version 1.0
  *
  * MiniGame needs to be extended by every miniGame add on.
  * It stores all the information and logic for a miniGame.
@@ -19,6 +20,13 @@ public abstract class MiniGame {
      * All registered miniGames.
      */
     private static final List<MiniGame> miniGames = new ArrayList<>();
+
+    /**
+     * Returns a random game.
+     */
+    public static MiniGame getRandomGame() {
+        return miniGames.get((int) (Math.random() * miniGames.size()));
+    }
 
     /**
      * All locations, players can spawn at
@@ -45,7 +53,7 @@ public abstract class MiniGame {
     /**
      * The lobby the miniGame is played in.
      */
-    protected Lobby lobby;
+    public Lobby lobby;
 
     /**
      * Default constructor to create and register a miniGame.
@@ -68,6 +76,11 @@ public abstract class MiniGame {
      * Signals the miniGame it is time to start.
      */
     public abstract void start();
+
+    /**
+     * Finish the miniGame.
+     */
+    public abstract void finish();
 
     /**
      * Signals the miniGame to stop mid-game.

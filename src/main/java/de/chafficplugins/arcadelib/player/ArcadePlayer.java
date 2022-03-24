@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static de.chafficplugins.arcadelib.utils.ConfigStrings.START_KARMA;
+
 /**
  * @author Chaffic
  * @since 1.0.0
@@ -26,7 +28,7 @@ public class ArcadePlayer {
     /**
      * The karma amount a specific player has.
      */
-    private int karma = 0;
+    private int karma = START_KARMA;
     /**
      * The party a player is in. Null if the player is not in a party.
      */

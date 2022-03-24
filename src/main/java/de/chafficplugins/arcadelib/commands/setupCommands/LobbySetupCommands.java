@@ -42,19 +42,23 @@ public class LobbySetupCommands implements ArcadeCommand {
                 }
             }
             case "create" -> {
-                if(args.length == 4) {
+                if(args.length == 4 || args.length == 5) {
                     Lobby lobby = Lobby.getLobby(args[2]);
                     if(lobby != null) {
                         //TODO: Send already exists message
                     } else {
                         int maxPlayers;
+                        int minPlayers = 2;
                         try {
                             maxPlayers = Integer.parseInt(args[3]);
+                            if(args.length == 5) {
+                                minPlayers = Integer.parseInt(args[4]);
+                            }
                         } catch (NumberFormatException e) {
                             //TODO: Send not a number message
                             return true;
                         }
-                        new Lobby(args[2], maxPlayers);
+                        new Lobby(args[2], maxPlayers, minPlayers);
                     }
                 }
             }

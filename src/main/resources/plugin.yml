@@ -9,4 +9,7 @@ website: https://chafficplugins.github.io/
 commands:
   arcadelib:
       description: Setup the lobby
-      usage: /arcadelib setup lobby
+      usage: /arcadelib
+  party:
+      description: Create a party
+      usage: /party
