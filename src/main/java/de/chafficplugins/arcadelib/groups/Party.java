@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static de.chafficplugins.arcadelib.localization.Localization.Key.*;
+
 /**
  * @author Chaffic
  * @since 1.0.0
@@ -91,27 +93,24 @@ public class Party {
      * @param sender The sender of the invitation.
      */
     public static void invite(ArcadePlayer sender, ArcadePlayer receiver) {
+        if(receiver.party != null) {
+            sender.sendMessage(PARTY_PLAYER_IS_ALREADY_IN_A_PARTY);
+            return;
+        }
         if(sender.party != null) {
             if(sender.party.leader != sender) {
-                //TODO: Send message sender is not the leader
+                sender.sendMessage(PARTY_NOT_THE_LEADER);
             } else {
-                if(receiver.party != null) {
-                    //TODO: Send message receiver is already in a party
-                    return;
-                }
-                //TODO: Send message invitation was sent
+                sender.sendMessage(PARTY_INVITATION_SENT, receiver.getName());
                 invitations.add(new Invitation(sender, receiver, sender.party));
-                //TODO: Send invitation
-            }
+                receiver.sendMessage(PARTY_INVITATION_RECEIVED, sender.getName());
+            }//TODO: Check if party is full
         } else {
-            if(receiver.party != null) {
-                //TODO: Send message receiver is already in a party
-                return;
-            }
             sender.party = new Party(sender); //TODO: Add max party size
-            //TODO: Send message party was created
+            sender.sendMessage(PARTY_CREATED);
+            sender.sendMessage(PARTY_INVITATION_SENT, receiver.getName());
             invitations.add(new Invitation(sender, receiver, sender.party));
-            //TODO: Send message invitation was sent
+            receiver.sendMessage(PARTY_INVITATION_RECEIVED, sender.getName());
         }
     }
 
@@ -125,11 +124,12 @@ public class Party {
             if(invitation.receiver == receiver && invitation.sender == sender) {
                 receiver.party = invitation.group;
                 invitations.remove(invitation);
+                receiver.sendMessage(PARTY_INVITATION_ACCEPTED_RECEIVER, sender.getName());
                 //TODO: SEND MESSAGE JOINED PARTY
                 return;
             }
         }
-        //TODO: Send message invitation not found
+        receiver.sendMessage(PARTY_INVITATION_NOT_FOUND, sender.getName());
     }
 
     /**
@@ -141,11 +141,12 @@ public class Party {
         for(Invitation invitation : invitations) {
             if(invitation.receiver == receiver && invitation.sender == sender) {
                 invitations.remove(invitation);
-                //TODO: SEND MESSAGE DECLINED INVITATION
+                receiver.sendMessage(PARTY_INVITATION_DECLINED_RECEIVER, sender.getName());
+                sender.sendMessage(PARTY_INVITATION_DECLINED_SENDER, receiver.getName());
                 return;
             }
         }
-        //TODO: Send message invitation not found
+        receiver.sendMessage(PARTY_INVITATION_NOT_FOUND, sender.getName());
     }
 
     /**

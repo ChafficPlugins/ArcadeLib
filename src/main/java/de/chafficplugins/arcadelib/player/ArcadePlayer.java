@@ -1,6 +1,7 @@
 package de.chafficplugins.arcadelib.player;
 
 import de.chafficplugins.arcadelib.groups.Party;
+import de.chafficplugins.arcadelib.localization.Localization;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static de.chafficplugins.arcadelib.localization.Localization.getLocalizedString;
 import static de.chafficplugins.arcadelib.utils.ConfigStrings.START_KARMA;
 
 /**
@@ -61,6 +63,14 @@ public class ArcadePlayer {
     }
 
     /**
+     * Gets the name of the player.
+     * @return The name of the player.
+     */
+    public String getName() {
+        return getPlayer().getName();
+    }
+
+    /**
      * Gets the ArcadePlayer for the given player.
      * @param player The player to get the ArcadePlayer for.
      * @return The ArcadePlayer for the given player. Null if the player is not registered.
@@ -88,6 +98,22 @@ public class ArcadePlayer {
      */
     public void sendMessage(String message) {
         getPlayer().sendMessage(message);
+    }
+
+    /**
+     * Sends a chat localized message to the player.
+     * @param key The message to send.
+     */
+    public void sendMessage(Localization.Key key) {
+        sendMessage(getLocalizedString(key));
+    }
+
+    /**
+     * Sends a chat localized message with placeholders to the player.
+     * @param key The message to send.
+     */
+    public void sendMessage(Localization.Key key, String... placeholders) {
+        sendMessage(getLocalizedString(key, placeholders));
     }
 
     public void removeKarma(int karma) {
@@ -136,10 +162,5 @@ public class ArcadePlayer {
         if (o == null || getClass() != o.getClass()) return false;
         ArcadePlayer that = (ArcadePlayer) o;
         return Objects.equals(uuid, that.uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(arcadePlayers, uuid);
     }
 }

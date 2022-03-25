@@ -4,6 +4,7 @@ public class ConfigStrings {
     public final static int SPIGOT_ID = 100886; //TODO
     public final static int BSTATS_ID = 14709; //TODO
     public final static String CRUCIAL_API_VERSION = "2.1.1";
+    public final static String PREFIX = "§8[§6Arcade§8] §7";
 
     //Configuration
     public static int START_KARMA = 500;
