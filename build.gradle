@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
-    compileOnly 'com.github.Chafficui:CrucialAPI:2.1.1'
+    compileOnly 'com.github.Chafficui:CrucialAPI:2.1.2'
 }
 
 def targetJavaVersion = 16

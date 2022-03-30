@@ -1,16 +1,16 @@
 package de.chafficplugins.arcadelib.localization;
 
-public class Localization {
+import io.github.chafficui.CrucialAPI.Utils.localization.Localized;
+import io.github.chafficui.CrucialAPI.Utils.localization.Localizer;
 
-    /**
-     * Returns the localized string for the given key and replaces the placeholders with the given values.
-     */
+public class Localization extends Localized {
+
     public static String getLocalizedString(Key key, String... values) {
-        String message = getLocalizedString(key);
-        for (int i = 0; i < values.length; i++) {
-            message = message.replace("{" + i + "}", values[i]);
-        }
-        return message;
+        return Localizer.getLocalizedString("arcadelib_" + key.name(), values);
+    }
+
+    public Localization(String identifier) {
+        super(identifier);
     }
 
     /**
@@ -18,8 +18,8 @@ public class Localization {
      * @param key The key of the string.
      * @return The localized string.
      */
-    public static String getLocalizedString(Key key) {
-        switch (key) {
+    public String getLocalizedString(String key) {
+        switch (Key.valueOf(key)) {
             case COMMAND_NOT_A_PLAYER_ERROR -> {
                 return "&cDieser Befehl kann nur von Spielern ausgeführt werden!";
             }
@@ -64,7 +64,6 @@ public class Localization {
             }
         }
     }
-
 
 
     public enum Key {
